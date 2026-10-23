@@ -4,6 +4,12 @@
 
 Recebe um contrato fictício curto e uma tabela de entregas; usa a OpenAI para extrair o contratado, compara quantidade, prazo e valor em código e apresenta cada diferença com evidências para revisão humana. Escopo: um contrato com até dez itens. Não faz interpretação jurídica.
 
+**Aplicação pública:** [conferia-devday-2026.vercel.app](https://conferia-devday-2026.vercel.app)  
+**Código:** [willdmx/conferia-devday-2026](https://github.com/willdmx/conferia-devday-2026)  
+**Entrega:** [validação executada](VALIDATION.md) · [roteiro de vídeo de 2min40s](VIDEO.md).
+
+Fluxo público verificado em 23/10/2026, às 12h46–12h47 BRT: chamada real à OpenAI, cinco itens, três divergências, dois conformes, evidências literais e revisão preservada após recarregar. A chamada HTTP de validação não usou cookies ou autenticação.
+
 ## Executar localmente
 
 Requisitos: Node.js 22 ou 24 e uma chave da OpenAI com acesso a Responses API e Structured Outputs.
@@ -62,6 +68,13 @@ Para testar **uma chamada real** (consome API), deixe o servidor e a chave confi
 npm.cmd run test:live
 ```
 
+Para conferir a versão pública sem carregar credenciais locais:
+
+```powershell
+$env:CONFERIA_BASE_URL='https://conferia-devday-2026.vercel.app'
+node --import tsx scripts/verify-live.ts
+```
+
 O teste real verifica cinco itens, três diferenças específicas, dois conformes, evidências literais e um ID de resposta da OpenAI. Os testes unitários usam fixtures e dependência injetada, sem consumir API e sem afirmar que executaram uma chamada real.
 
 ## Publicar na Vercel
@@ -72,6 +85,6 @@ O teste real verifica cinco itens, três diferenças específicas, dois conforme
 4. Instalação: `npm ci`. Build: `npm run build`. A saída é a padrão do Next.js.
 5. Faça o deploy e execute a demonstração no endereço publicado. A função tem duração máxima de 60 segundos; a chamada OpenAI usa timeout de 45 segundos, sem retries automáticos.
 
-Não é necessário `vercel.json`, banco de dados ou outro serviço. Estar pronto para deploy não significa que o projeto já foi publicado.
+Não é necessário `vercel.json`, banco de dados ou outro serviço. Este projeto está publicado na Vercel e conectado ao repositório GitHub acima. `OPENAI_API_KEY` está configurada como segredo somente no ambiente Production. O domínio público da aplicação é acessível sem login.
 
 Referência da integração: [Structured Outputs — documentação oficial OpenAI](https://developers.openai.com/api/docs/guides/structured-outputs?api-mode=responses).
